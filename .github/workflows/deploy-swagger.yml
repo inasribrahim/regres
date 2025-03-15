@@ -15,9 +15,23 @@ jobs:
       - name: Set up Swagger UI
         run: |
           git clone https://github.com/swagger-api/swagger-ui.git
-          cp reqres.openapi.yml swagger-ui/dist/swagger.yaml  # Ensure YAML file is copied correctly
-          echo "window.onload = function() { window.ui = SwaggerUIBundle({ url: 'swagger.yaml', dom_id: '#swagger-ui' }); };" > swagger-ui/dist/custom.js
-          sed -i 's|url: "https://petstore.swagger.io/v2/swagger.json"|url: "swagger.yaml"|g' swagger-ui/dist/index.html
+          cp reqres.openapi.yml swagger-ui/dist/swagger.yaml
+
+          # Fix Swagger UI to load reqres.openapi.yml
+          cat > swagger-ui/dist/swagger-initializer.js <<EOL
+          window.onload = function() {
+            window.ui = SwaggerUIBundle({
+              url: 'swagger.yaml',
+              dom_id: '#swagger-ui',
+              deepLinking: true,
+              presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+              ],
+              layout: "StandaloneLayout"
+            });
+          };
+          EOL
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
