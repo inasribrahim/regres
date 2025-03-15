@@ -1,0 +1,26 @@
+name: Deploy Swagger UI
+
+on:
+  push:
+    branches:
+      - main  # Trigger on main branch push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Swagger UI
+        run: |
+          git clone https://github.com/swagger-api/swagger-ui.git
+          cp reqres.openapi.yml swagger-ui/dist/swagger.yaml
+          echo "window.onload = function() { window.ui = SwaggerUIBundle({ url: 'swagger.yaml', dom_id: '#swagger-ui' }); };" > swagger-ui/dist/custom.js
+          sed -i 's|url: "https://petstore.swagger.io/v2/swagger.json"|url: "swagger.yaml"|g' swagger-ui/dist/index.html
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: swagger-ui/dist
