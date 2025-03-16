@@ -1,52 +1,56 @@
 openapi: 3.0.3
 info:
-  title: SDK example - OpenAPI 3.0
+  title: SDK Example - OpenAPI 3.0
   description: |-
     This spec is meant to demonstrate how to use the SDK generator by readme.io
   version: 1.0.11
+
 servers:
   - url: https://reqres.in/api
+
 tags:
-  - name: Test
+  - name: Users
+    description: API operations for users
+
 paths:
   /users:
     post:
       tags:
-        - Test
+        - Users
       summary: Add a new user
       description: Add a new user
       operationId: addUser
       requestBody:
-        description: Create a new pet in the store
+        description: User details for creation
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/userRequest'
         required: true
       responses:
-        '200':
-          description: Successful operation
+        '201':
+          description: User successfully created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/userResponse'          
     get:
       tags:
-        - Test
-      summary: Return a list of users
-      description: Return a list of users
+        - Users
+      summary: Get a list of users
+      description: Retrieve a paginated list of users
       operationId: getUsers
       parameters:
         - name: page
           in: query
-          description: Select the portition of record you want back
+          description: Page number for pagination
           required: false
           schema:
             type: integer
             example: 1 
       responses:
         '200':
-          description: successful operation
+          description: Successfully retrieved users
           content:
             application/json:
               schema:
@@ -57,21 +61,20 @@ paths:
   /users/{id}:
     put:
       tags:
-        - Test
+        - Users
       summary: Update an existing user
-      description: Update an existing user by Id
+      description: Update an existing user by ID
       operationId: updateUser
       parameters:
         - name: id
           in: path
-          description: id of user to delete
+          description: ID of user to update
           required: true
           example: 1
           schema:
             type: integer
-            format: int64
       requestBody:
-        description: Update an existent pet in the store
+        description: User details for update
         content:
           application/json:
             schema:
@@ -79,42 +82,52 @@ paths:
         required: true
       responses:
         '200':
-          description: Successful operation
+          description: Successfully updated user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/userResponse'  
     delete:
       tags:
-        - Test
-      summary: Deletes a user
-      description: delete a user
+        - Users
+      summary: Delete a user
+      description: Delete a user by ID
       operationId: deleteUser
       parameters:
         - name: id
           in: path
-          description: id of user to delete
+          description: ID of user to delete
           required: true
           example: 1
           schema:
             type: integer
-            format: int64
       responses:
         '204':
-          description: No content
+          description: No content - Successfully deleted
 
 components:
   schemas: 
     userResponse:
-     description: response payload
+      type: object
+      description: Response schema for user data
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Morpheus"
+        job:
+          type: string
+          example: "Leader"
+
     userRequest:
-     type: object
-     properties:
-      name:
-        type: string
-        example: "morpheus"
-      job:
-        type: string
-        example: "leader"
-      
-  
+      type: object
+      description: Request payload for creating or updating users
+      properties:
+        name:
+          type: string
+          example: "Morpheus"
+        job:
+          type: string
+          example: "Leader"
