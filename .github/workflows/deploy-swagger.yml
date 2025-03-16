@@ -15,9 +15,9 @@ jobs:
       - name: Set up Swagger UI
         run: |
           git clone https://github.com/swagger-api/swagger-ui.git
-          cp reqres.openapi.yml swagger-ui/dist/swagger.yaml
-
-          # Fix Swagger UI to load reqres.openapi.yml
+          cp reqres.openapi.yml swagger-ui/dist/swagger.yaml  # Ensure YAML is copied
+          
+          # Fix Swagger UI config
           cat > swagger-ui/dist/swagger-initializer.js <<EOL
           window.onload = function() {
             window.ui = SwaggerUIBundle({
