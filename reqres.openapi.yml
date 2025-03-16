@@ -1,132 +1,120 @@
 openapi: 3.0.3
 info:
-  title: ReqRes API - OpenAPI 3.0
-  description: API specification for ReqRes service
-  version: 1.0.0
-
+  title: SDK example - OpenAPI 3.0
+  description: |-
+    This spec is meant to demonstrate how to use the SDK generator by readme.io
+  version: 1.0.11
 servers:
   - url: https://reqres.in/api
-
 tags:
-  - name: Users
-    description: Operations related to users
-
+  - name: Test
 paths:
   /users:
     post:
       tags:
-        - Users
+        - Test
       summary: Add a new user
-      description: Create a new user in the system.
+      description: Add a new user
       operationId: addUser
       requestBody:
-        description: User details for creation.
+        description: Create a new pet in the store
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRequest'
+              $ref: '#/components/schemas/userRequest'
         required: true
       responses:
-        '201':
-          description: User successfully created.
+        '200':
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponse'          
+                $ref: '#/components/schemas/userResponse'          
     get:
       tags:
-        - Users
-      summary: Get users list
-      description: Fetches a paginated list of users.
+        - Test
+      summary: Return a list of users
+      description: Return a list of users
       operationId: getUsers
       parameters:
         - name: page
           in: query
-          description: Page number for pagination.
+          description: Select the portition of record you want back
           required: false
           schema:
             type: integer
             example: 1 
       responses:
         '200':
-          description: Successfully retrieved users.
+          description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserResponse'
+                  $ref: '#/components/schemas/userResponse'
 
   /users/{id}:
     put:
       tags:
-        - Users
+        - Test
       summary: Update an existing user
-      description: Updates user information by ID.
+      description: Update an existing user by Id
       operationId: updateUser
       parameters:
         - name: id
           in: path
-          description: ID of the user to update.
+          description: id of user to delete
           required: true
           example: 1
           schema:
             type: integer
+            format: int64
       requestBody:
-        description: Updated user details.
+        description: Update an existent pet in the store
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRequest'
+              $ref: '#/components/schemas/userRequest'
         required: true
       responses:
         '200':
-          description: Successfully updated user.
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponse'  
+                $ref: '#/components/schemas/userResponse'  
     delete:
       tags:
-        - Users
-      summary: Delete a user
-      description: Deletes a user by ID.
+        - Test
+      summary: Deletes a user
+      description: delete a user
       operationId: deleteUser
       parameters:
         - name: id
           in: path
-          description: ID of the user to delete.
+          description: id of user to delete
           required: true
           example: 1
           schema:
             type: integer
+            format: int64
       responses:
         '204':
-          description: No content - Successfully deleted.
+          description: No content
 
 components:
   schemas: 
-    UserResponse:
-      type: object
-      description: Response schema for user data.
-      properties:
-        id:
-          type: integer
-          example: 1
-        name:
-          type: string
-          example: "Morpheus"
-        job:
-          type: string
-          example: "Leader"
-
-    UserRequest:
-      type: object
-      description: Request payload for creating or updating users.
-      properties:
-        name:
-          type: string
-          example: "Morpheus"
-        job:
-          type: string
-          example: "Leader"
+    userResponse:
+     description: response payload
+    userRequest:
+     type: object
+     properties:
+      name:
+        type: string
+        example: "morpheus"
+      job:
+        type: string
+        example: "leader"
+      
+  
